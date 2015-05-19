@@ -1,0 +1,8 @@
+project(SleepDetector)
+cmake_minimum_required(VERSION 2.8)
+aux_source_directory(src SRC_LIST)
+add_executable(${PROJECT_NAME} ${SRC_LIST})
+find_package( OpenCV )
+include_directories( ${OpenCV_INCLUDE_DIRS}  libs )
+link_directories( /usr/local/lib )
+target_link_libraries( ${PROJECT_NAME} ${OpenCV_LIBS} )

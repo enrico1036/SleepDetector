@@ -1,0 +1,32 @@
+#ifndef SLEEPDETECTOR_H
+#define SLEEPDETECTOR_H
+
+#include <opencv2/opencv.hpp>
+#include <algorithm>
+
+using namespace cv;
+using namespace std;
+
+class SleepDetector
+{
+private:
+    float us;
+    float ds;
+    vector<Vec3f> circles;
+    Mat converted;
+
+public:
+
+    enum Method{
+        SD_CIRCLES_FINDING = 1,
+        SD_THRESHOLDING = 2,
+        SD_ADAPTIVE_THRESHOLDING = 3,
+        SD_VARIANCE = 4
+    };
+
+    SleepDetector(float scalefactor);
+    bool isOpen(Mat &image, Method method);
+    void display(Mat &image, Point offset);
+};
+
+#endif // SLEEPDETECTOR_H
