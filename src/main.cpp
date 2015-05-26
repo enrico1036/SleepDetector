@@ -15,7 +15,6 @@ using namespace ps3eye;
 #define SCALEFACTOR 0.25
 
 int main(int argc, const char * argv[]) {
-    // insert code here...
     
 //    VideoCapture cap(1); // open the default camera
 //    if(!cap.isOpened())  // check if we succeeded
@@ -47,9 +46,8 @@ int main(int argc, const char * argv[]) {
     //prevface.eyes.push_back(Rect(0,0,0,0));
     for(;;)
     {
-        //cap >> frame; // get a new frame from camera
         frame = cvarrToMat(cvQueryFrame(capture), true);
-        detector.prepareImage(frame, scaled);
+        detector.prepareImage(frame, scaled, prevface.face);
         //GaussianBlur(frame, frame, Size(7,7), 1.5, 1.5);
         //Canny(edges, edges, 0, 30, 3);
         
@@ -57,11 +55,13 @@ int main(int argc, const char * argv[]) {
             //detector.display(prevface, frame);
             sd.isOpen(prevface.eyetpl, SleepDetector::SD_ADAPTIVE_THRESHOLDING);
             sd.display(frame, prevface.eye.tl());
-            imshow("Elaboration", prevface.eyetpl);
+            //imshow("Elaboration", prevface.eyetpl);
             detector.trackEye(scaled, prevface);
         }
         else
-            prevface=detector.detect(scaled);
+            detector.detect(scaled, prevface);
+            // at least a face detected so can be calculated next zoom
+            //detector.calculateZoom(frame, prevface.face);
 
         detector.display(prevface, frame);
 
