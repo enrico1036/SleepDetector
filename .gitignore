@@ -3,3 +3,4 @@ build/
 CMakeLists*
 .DS_Store
 face_detect
+*~
