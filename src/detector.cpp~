@@ -14,13 +14,13 @@ Detector::Detector(std::string frontface, std::string eyes, std::string profilef
 void Detector::load(std::string frontface, std::string eyes, std::string profileface){
     // Load cascade files
     if(!face_cascade.load(frontface)){
-        throw std::runtime_error("Error loading face cascade!");
+        throw runtime_error("Error loading face cascade!");
     }
     if(!profile_cascade.load(eyes)){
-        throw std::runtime_error("Error loading face cascade!");
+        throw runtime_error("Error loading face cascade!");
     }
     if(!eye_cascade.load(profileface)){
-        throw std::runtime_error("Error loading face cascade!");
+        throw runtime_error("Error loading face cascade!");
     }
 }
 

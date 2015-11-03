@@ -10,7 +10,7 @@ typedef struct{
     Rect face;
     Rect eye;
     Mat eyetpl;
-    bool eyeOpen;
+    bool isOpen;
 }Face;
 
 class Detector{
