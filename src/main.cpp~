@@ -62,7 +62,7 @@ int main(int argc, const char * argv[]) {
         if(prevface.eye.x){	//eye already detected, so perform track only
             //detector.display(prevface, frame);
             if(prevface.eyeOpen){
-            	sd.waitMillis(50);
+            	sd.waitMillis(500);
             	if(!sd.isOpen(prevface.eyetpl, SleepDetector::SD_ADAPTIVE_THRESHOLDING)){
             		cout << "Beep!----------------------------------------------------" << endl;
             	}

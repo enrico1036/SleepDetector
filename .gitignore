@@ -1,4 +1,5 @@
 build/
 *.o
-
-CMakeLists.txt.user
+CMakeLists*
+.DS_Store
+face_detect
