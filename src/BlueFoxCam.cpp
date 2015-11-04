@@ -28,10 +28,10 @@ BlueFoxCam::BlueFoxCam()
 	setting.cameraSetting.pixelFormat.write(ibpfAuto);
 	setting.imageDestination.pixelFormat.write(idpfRGB888Packed);
 	setting.cameraSetting.triggerMode.write(ctmOnDemand);
-	//setting.cameraSetting.exposeMode.write(cemOverlapped);
-	//setting.cameraSetting.expose_us.write(40000);
+	setting.cameraSetting.exposeMode.write(cemOverlapped);
+	//setting.cameraSetting.expose_us.write(13);
 	setting.cameraSetting.pixelClock_KHz.write(cpc40000KHz);
-	//setting.cameraSetting.gain_dB.write(0);
+	//setting.cameraSetting.gain_dB.write(12);
 
 	SystemSettings ss(this->pDev);
 	ss.requestCount.write(1);

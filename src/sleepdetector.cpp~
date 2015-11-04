@@ -5,8 +5,11 @@ SleepDetector::SleepDetector(float scalefactor){
     us = 1/ds;
 }
 
-bool SleepDetector::isOpen(Mat &image, Method method){
+bool SleepDetector::isOpen(Mat &src, Method method){
     vector<vector<Point> > contours;
+    Mat image;
+    resize(src, image, Size(20, 20));
+    bool isOpen = false;
 
     switch (method){
         case SD_CIRCLES_FINDING:
@@ -37,6 +40,7 @@ bool SleepDetector::isOpen(Mat &image, Method method){
                     abs(1 - ((double)rect.width / (double)rect.height)) <= 0.2 &&
                     abs(1 - (area / (CV_PI * pow(radius, 2)))) <= 0.2)
                 {
+                	isOpen = true;
                     cout << "Found pupil!  " << i << endl;
                     //circle(frame, Point((rect.x + radius)*us, (rect.y + radius)*us), radius, CV_RGB(255,0,0), 2);
                     circles.push_back(Vec3f((rect.x + radius), (rect.y + radius), radius));
@@ -45,13 +49,11 @@ bool SleepDetector::isOpen(Mat &image, Method method){
             }
             resize(converted, converted, Size(0,0), us, us);
             imshow("Debug", converted);
-
-            return true;
             break;
 
         case SD_ADAPTIVE_THRESHOLDING:
             equalizeHist(image, converted);
-            GaussianBlur(converted, converted, Size(3,3), 1, 1);
+            //GaussianBlur(converted, converted, Size(3,3), 1, 1);
             adaptiveThreshold(converted, converted, 255, ADAPTIVE_THRESH_GAUSSIAN_C, THRESH_BINARY_INV, 7, 18);
             // Find all contours
             //vector<vector<Point> > contours;
@@ -59,6 +61,7 @@ bool SleepDetector::isOpen(Mat &image, Method method){
 
             // Fill holes in each contour
             drawContours(converted, contours, -1, CV_RGB(255,255,255), -1);
+            
             for (int i = 0; i < contours.size(); i++)
             {
                 double area = contourArea(contours[i]); // Blob area
@@ -71,14 +74,15 @@ bool SleepDetector::isOpen(Mat &image, Method method){
                     abs(1 - ((double)rect.width / (double)rect.height)) <= 0.3 &&
                     abs(1 - (area / (CV_PI * pow(radius, 2)))) <= 0.8)
                 {
+                	isOpen = true;
                     cout << "Found pupil!  " << i << endl;
                     cout << area << endl;
                     circles.push_back(Vec3f((rect.x + radius), (rect.y + radius), radius));
+                    cout << "x: " << rect.x << " y: " << rect.y << " radius: " << radius << endl;
                 }
             }
             resize(converted, converted, Size(0,0), us, us);
             imshow("Debug", converted);
-            return true;
             break;
 
     case SD_VARIANCE:
@@ -90,7 +94,7 @@ bool SleepDetector::isOpen(Mat &image, Method method){
         cout << stddev.val[0] << endl;
         break;
     }
-    return false;
+    return isOpen;
 }
 
 void SleepDetector::waitMillis(int millis){

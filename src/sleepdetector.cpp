@@ -5,8 +5,10 @@ SleepDetector::SleepDetector(float scalefactor){
     us = 1/ds;
 }
 
-bool SleepDetector::isOpen(Mat &image, Method method){
+bool SleepDetector::isOpen(Mat &src, Method method){
     vector<vector<Point> > contours;
+    Mat image;
+    resize(src, image, Size(20, 20));
     bool isOpen = false;
 
     switch (method){
@@ -51,7 +53,7 @@ bool SleepDetector::isOpen(Mat &image, Method method){
 
         case SD_ADAPTIVE_THRESHOLDING:
             equalizeHist(image, converted);
-            GaussianBlur(converted, converted, Size(3,3), 1, 1);
+            //GaussianBlur(converted, converted, Size(3,3), 1, 1);
             adaptiveThreshold(converted, converted, 255, ADAPTIVE_THRESH_GAUSSIAN_C, THRESH_BINARY_INV, 7, 18);
             // Find all contours
             //vector<vector<Point> > contours;
@@ -68,14 +70,15 @@ bool SleepDetector::isOpen(Mat &image, Method method){
 
                 // Look for round shaped blob
 
-                if (area >= 5 &&
-                    abs(1 - ((double)rect.width / (double)rect.height)) <= 0.3 &&
-                    abs(1 - (area / (CV_PI * pow(radius, 2)))) <= 0.8)
+                if (area >= 4 &&
+                    abs(1 - ((double)rect.width / (double)rect.height)) <= 0.4 &&
+                    abs(1 - (area / (CV_PI * pow(radius, 2)))) <= 0.9)
                 {
                 	isOpen = true;
                     cout << "Found pupil!  " << i << endl;
                     cout << area << endl;
                     circles.push_back(Vec3f((rect.x + radius), (rect.y + radius), radius));
+                    cout << "x: " << rect.x << " y: " << rect.y << " radius: " << radius << endl;
                 }
             }
             resize(converted, converted, Size(0,0), us, us);

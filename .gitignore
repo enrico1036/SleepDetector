@@ -1,6 +1,7 @@
 build/
 *.o
+*~
+src/*~
 CMakeLists*
 .DS_Store
-face_detect
-*~
+sleep_detector

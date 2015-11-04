@@ -3,6 +3,8 @@
 #include "detector.h"
 #include "sleepdetector.h"
 #include "BlueFoxCam.h"
+#include <thread>
+#include <chrono>
 //#include <libusb.h>
 
 using namespace cv;
@@ -11,7 +13,7 @@ using namespace std;
 #define WIDTH 752
 #define HEIGHT 480
 #define BLUR_FRAME
-#define SCALEFACTOR 0.25
+#define SCALEFACTOR 0.35 //0.25 original value
 
 int main(int argc, const char * argv[]) {
     
@@ -41,9 +43,9 @@ int main(int argc, const char * argv[]) {
     Mat scaled;
     namedWindow("Acquisition");
     namedWindow("Elaboration", WINDOW_NORMAL);
-    resizeWindow("Elaboration", 300, 300);
+    resizeWindow("Elaboration", WIDTH, HEIGHT);
     namedWindow("Debug", WINDOW_NORMAL);
-    resizeWindow("Debug", 300, 300);
+    //resizeWindow("Debug", 300, 300);
     
     Face prevface;
     //prevface.eyes.push_back(Rect(0,0,0,0));
@@ -56,13 +58,13 @@ int main(int argc, const char * argv[]) {
         	cout << e.what() << endl;
         }
         detector->prepareImage(frame, scaled, prevface.face);
-        //GaussianBlur(frame, frame, Size(7,7), 1.5, 1.5);
-        //Canny(edges, edges, 0, 30, 3);
+        
         
         if(prevface.eye.x){	//eye already detected, so perform track only
             //detector.display(prevface, frame);
             if(prevface.eyeOpen){
-            	sd.waitMillis(50);
+            	//sd.waitMillis(50);
+            	this_thread::sleep_for(std::chrono::milliseconds(50));
             	if(!sd.isOpen(prevface.eyetpl, SleepDetector::SD_ADAPTIVE_THRESHOLDING)){
             		cout << "Beep!----------------------------------------------------" << endl;
             	}
@@ -83,7 +85,7 @@ int main(int argc, const char * argv[]) {
         if(waitKey(30) >= 0) break;
     }
     // deinitialize camera
-    delete cam;
+    //delete cam;
     delete detector;
     return 0;
 }

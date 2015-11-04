@@ -45,9 +45,9 @@ bool Detector::detect(Mat &image, Face &face){
         return false;
     }
     //  eye detenction if face detected
-    //only a eye is detected because if a person sleep, he usually closes all the eyes
+    //only a eye is detected because if a person sleeps, he usually closes both eyes
     face.face = faces[0];
-    eye_cascade.detectMultiScale(image(faces[0]-=Size(0,faces[0].height/2)), eyes, 1.1, 4);
+    eye_cascade.detectMultiScale(image(faces[0]-=Size(0,faces[0].height/2)), eyes, 1.1, 3);
     if(!eyes.size()){
         //  no eye detected
         face.eye = Rect(0,0,0,0);
@@ -98,16 +98,18 @@ void Detector::prepareImage(Mat &image, Mat &dst, Rect &face){
 
 
     resize(image, dst, Size(0,0), ds, ds, CV_INTER_AREA);
-    calculateZoom(dst, dst, face);
+    //calculateZoom(dst, dst, face);
     cvtColor(dst, dst, CV_RGB2GRAY);
-    GaussianBlur(dst, dst, Size(5,5), 1.5, 1.5);
+    GaussianBlur(dst, dst, Size(7,7), 1.5, 1.5);
+    //Mat dst2(dst);
+    //bilateralFilter(dst2, dst, 5, 5, 5);
 }
 
 Mat Detector::calculateZoom(Mat image, Mat &dst, Rect face){
     //  calculate the next zoom factor based on the previous face size
     //zoom = image.cols*image.rows/(face.size().area()*pow(us,2));
-    cout << "x: " << face.x << " y: " << face.y << " width: " << face.width << " height: " << face.height << endl;
-    cout << "x new: " << face.x - face.width*0.1/2 << " y new: " << (int)(face.y - face.height*0.1/2) << endl;
+    //cout << "x: " << face.x << " y: " << face.y << " width: " << face.width << " height: " << face.height << endl;
+    //cout << "x new: " << face.x - face.width*0.1/2 << " y new: " << (int)(face.y - face.height*0.1/2) << endl;
 
     if(face.x) {
         Rect window((face.x - face.width*0.1/2), (face.y - face.height*0.1/2), (face.width*1.1), (face.height*1.1));

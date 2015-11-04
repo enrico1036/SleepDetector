@@ -26,7 +26,7 @@ public:
     };
 
     SleepDetector(float scalefactor);
-    bool isOpen(Mat &image, Method method);
+    bool isOpen(Mat &src, Method method);
     void waitMillis(int millis);
     void display(Mat &image, Point offset);
 };
