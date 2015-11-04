@@ -20,14 +20,14 @@ BlueFoxCam::BlueFoxCam()
 	SettingsBlueFOX setting(this->pDev);
 	setting.cameraSetting.imageRequestTimeout_ms.write(800);
 	setting.cameraSetting.autoExposeControl.write(aecOn);
-	//setting.cameraSetting.getAutoControlParameters().exposeLowerLimit_us.write(50);
-	//setting.cameraSetting.getAutoControlParameters().exposeUpperLimit_us.write(50000);
+	//setting.cameraSetting.getAutoControlParameters().exposeLowerLimit_us.write(12);
+	//setting.cameraSetting.getAutoControlParameters().exposeUpperLimit_us.write(500000);
 	setting.cameraSetting.autoGainControl.write(agcOn);
 	setting.cameraSetting.getAutoControlParameters().gainLowerLimit_dB.write(0);
 	setting.cameraSetting.getAutoControlParameters().gainUpperLimit_dB.write(12);
 	setting.cameraSetting.pixelFormat.write(ibpfAuto);
 	setting.imageDestination.pixelFormat.write(idpfRGB888Packed);
-	setting.cameraSetting.triggerMode.write(ctmOnDemand);
+	setting.cameraSetting.triggerMode.write(ctmContinuous);
 	setting.cameraSetting.exposeMode.write(cemOverlapped);
 	//setting.cameraSetting.expose_us.write(13);
 	setting.cameraSetting.pixelClock_KHz.write(cpc40000KHz);
@@ -48,7 +48,8 @@ BlueFoxCam::BlueFoxCam()
 BlueFoxCam::~BlueFoxCam()
 {
 	this->pDev->close();
-	delete this->pDev;
+	//delete this->pDev;
+	//fi->acquisitionStop();
 	delete this->fi;
 }
 

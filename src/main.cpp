@@ -86,7 +86,7 @@ int main(int argc, const char * argv[]) {
         if(waitKey(30) >= 0) break;
     }
     // deinitialize camera
-    //delete cam;
+    delete cam;
     delete detector;
     return 0;
 }

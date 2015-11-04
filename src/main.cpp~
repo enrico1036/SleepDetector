@@ -10,10 +10,10 @@
 using namespace cv;
 using namespace std;
 
-#define WIDTH 752
-#define HEIGHT 480
+#define WIDTH 100//752
+#define HEIGHT 100//480
 #define BLUR_FRAME
-#define SCALEFACTOR 0.35 //0.25 original value
+#define SCALEFACTOR 0.55 //0.25 original value
 
 int main(int argc, const char * argv[]) {
     
@@ -43,9 +43,9 @@ int main(int argc, const char * argv[]) {
     Mat scaled;
     namedWindow("Acquisition");
     namedWindow("Elaboration", WINDOW_NORMAL);
-    resizeWindow("Elaboration", 300, 300);
+    resizeWindow("Elaboration", WIDTH, HEIGHT);
     namedWindow("Debug", WINDOW_NORMAL);
-    resizeWindow("Debug", 300, 300);
+    //resizeWindow("Debug", 300, 300);
     
     Face prevface;
     //prevface.eyes.push_back(Rect(0,0,0,0));
@@ -57,10 +57,9 @@ int main(int argc, const char * argv[]) {
         }catch(runtime_error e){
         	cout << e.what() << endl;
         }
+        
         detector->prepareImage(frame, scaled, prevface.face);
-        imshow("Elaboration", scaled);
-        //GaussianBlur(frame, frame, Size(7,7), 1.5, 1.5);
-        //Canny(edges, edges, 0, 30, 3);
+        
         
         if(prevface.eye.x){	//eye already detected, so perform track only
             //detector.display(prevface, frame);

@@ -87,7 +87,7 @@ void Detector::trackEye(Mat im, Face &face){
     Point minloc, maxloc;
     minMaxLoc(dst, &minval, &maxval, &minloc, &maxloc);
     //DEBUG cout << "minval: " << minval << "maxval: " << maxval << endl;
-    if (minval <= 0.01)//was 0.005
+    if (minval <= 0.009)//was 0.005
     {
         face.eye.x = window.x + minloc.x;
         face.eye.y = window.y + minloc.y;
