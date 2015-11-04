@@ -13,7 +13,7 @@ using namespace std;
 #define WIDTH 752
 #define HEIGHT 480
 #define BLUR_FRAME
-#define SCALEFACTOR 0.35 //0.25 original value
+#define SCALEFACTOR 0.55 //0.25 original value
 
 int main(int argc, const char * argv[]) {
     
@@ -57,6 +57,7 @@ int main(int argc, const char * argv[]) {
         }catch(runtime_error e){
         	cout << e.what() << endl;
         }
+        
         detector->prepareImage(frame, scaled, prevface.face);
         
         

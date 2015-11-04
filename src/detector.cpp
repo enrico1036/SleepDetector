@@ -27,6 +27,7 @@ void Detector::load(std::string frontface, std::string eyes, std::string profile
 bool Detector::detect(Mat &image, Face &face){
     vector<Rect> faces;
     vector<Rect> eyes;
+    Mat resizedFace;
     //Face face;
 
     //imshow("Elaboration", image);
@@ -44,10 +45,12 @@ bool Detector::detect(Mat &image, Face &face){
         face.face = Rect(0,0,0,0);
         return false;
     }
-    //  eye detenction if face detected
+    //  eye detection if face detected
     //only a eye is detected because if a person sleeps, he usually closes both eyes
     face.face = faces[0];
-    eye_cascade.detectMultiScale(image(faces[0]-=Size(0,faces[0].height/2)), eyes, 1.1, 3);
+    resizedFace = image(faces[0]-=Size(0,faces[0].height/2));
+    //resize(resizedFace, resizedFace, Size(100, 100));
+    eye_cascade.detectMultiScale(resizedFace, eyes, 1.1, 3);
     if(!eyes.size()){
         //  no eye detected
         face.eye = Rect(0,0,0,0);
@@ -84,7 +87,7 @@ void Detector::trackEye(Mat im, Face &face){
     Point minloc, maxloc;
     minMaxLoc(dst, &minval, &maxval, &minloc, &maxloc);
     //DEBUG cout << "minval: " << minval << "maxval: " << maxval << endl;
-    if (minval <= 0.005)
+    if (minval <= 0.01)//was 0.005
     {
         face.eye.x = window.x + minloc.x;
         face.eye.y = window.y + minloc.y;
@@ -96,11 +99,11 @@ void Detector::trackEye(Mat im, Face &face){
 
 void Detector::prepareImage(Mat &image, Mat &dst, Rect &face){
 
-
     resize(image, dst, Size(0,0), ds, ds, CV_INTER_AREA);
-    //calculateZoom(dst, dst, face);
     cvtColor(dst, dst, CV_RGB2GRAY);
-    GaussianBlur(dst, dst, Size(7,7), 1.5, 1.5);
+    calculateZoom(dst, dst, face);
+    
+    GaussianBlur(dst, dst, Size(5, 5), 1.2, 1.2);
     //Mat dst2(dst);
     //bilateralFilter(dst2, dst, 5, 5, 5);
 }
@@ -115,11 +118,11 @@ Mat Detector::calculateZoom(Mat image, Mat &dst, Rect face){
         Rect window((face.x - face.width*0.1/2), (face.y - face.height*0.1/2), (face.width*1.1), (face.height*1.1));
         window &= Rect(0, 0, image.cols, image.rows);
         dst = image(window);
-        resize(dst, dst, Size(image.cols, image.rows), us, us, INTER_CUBIC);
+        resize(dst, dst, Size(image.cols, image.rows), 0, 0, INTER_CUBIC);
         imshow("Elaboration", dst);
     }
     else
-        cout << "non" << endl;
+        cout << "face not yet detected" << endl;
     return dst = image;
 }
 

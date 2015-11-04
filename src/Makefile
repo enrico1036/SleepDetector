@@ -1,5 +1,5 @@
 CC=g++
-CFLAGS=-O0 -g -std=gnu++11
+CFLAGS=-O3 -g -std=gnu++11
 INCLUDE_PATH=-I /opt/mvIMPACT_Acquire
 LIB_PATH=-L /opt/mvIMPACT_Acquire/lib/armhf/ -L ../libs/
 LIBS_MVIMPACT=-lmvDeviceManager -lmvBlueFOX
