@@ -1,1 +1,0 @@
-g++ main.cpp -I /opt/mvIMPACT_Acquire -I /home/ubuntu/Progetto/SleepDetector/src -L /opt/mvIMPACT_Acquire/lib/armhf/ -lmvDeviceManager -lmvBlueFOX -lopencv_video -lopencv_core -lopencv_objdetect -lopencv_imgproc -lopencv_highgui -lopencv_calib3d -lopencv_gpu

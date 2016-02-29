@@ -1,7 +1,0 @@
-build/
-*.o
-*~
-src/*~
-CMakeLists*
-.DS_Store
-sleep_detector
