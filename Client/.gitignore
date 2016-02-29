@@ -1,0 +1,6 @@
+build/
+*.o
+*~
+src/*~
+CMakeLists*
+.DS_Store
