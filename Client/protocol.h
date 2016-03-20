@@ -1,7 +1,9 @@
 #ifndef PROTOCOL_H
 #define PROTOCOL_H
 #include "common.h"
+#include <iostream>
 
+// Protocol messages
 #define CP_STOP        0xFF
 #define CP_START       0x1
 #define CP_ACK         0x2
@@ -23,7 +25,8 @@ struct ControlPacket{
     unsigned int block_size;
 };
 
-#include <iostream>
+
+// Utility that prints a control packet in a readable form
 using namespace std;
 static void print_cp(const ControlPacket p, string caller){
 

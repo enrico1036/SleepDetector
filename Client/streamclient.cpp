@@ -5,6 +5,7 @@ VideoStreamClient::VideoStreamClient(std::string local_interface, std::string lo
 {
     udp_sock = new libsocket::inet_dgram_server(local_interface, local_port, LIBSOCKET_BOTH);
 
+    // Set timeout in order to avoid being stuck on blocking read calls if something goes wrong
     libsocket::setReadTimeout(tcp_sock.getfd(), TCP_TO_SEC, TCP_TO_USEC);
     libsocket::setReadTimeout(udp_sock->getfd(), UDP_TO_SEC, UDP_TO_USEC);
 }

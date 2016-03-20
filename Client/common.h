@@ -6,7 +6,7 @@
 #include <string>
 #include <sstream>
 
-
+// These functions are custom additions to libsocket library
 namespace libsocket{
     static void setReadTimeout(int fd, int sec, int usec){
         timeval t;
@@ -48,6 +48,7 @@ static inline T1 min(const T1 a, const T2 b){
     return (a <= (T1)b) ? a : (T1)b;
 }
 
+// Returns 4-bytes form of a string representing an ipv4 address
 static unsigned int string_to_ip(std::string str){
     int ip[4];
 
@@ -65,7 +66,7 @@ static unsigned int string_to_ip(std::string str){
                             (ip[3])       & 0x000000FF ;
 }
 
-
+// Returns readable string form of 4-bytes ipv4 address
 static std::string ip_to_string(unsigned int ip){
     std::stringstream ss;
 

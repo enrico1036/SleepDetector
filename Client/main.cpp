@@ -11,15 +11,12 @@
 int main(int argc, char** argv)
 {
     VideoStreamClient vsc("192.168.1.2", "4569");
-    vsc.connect(argv[1], argv[2]);//(SRV_ADDR, SRV_PORT);
+    vsc.connect(argv[1], argv[2]);
 
     while(vsc.isConnected()) {
         cv::Mat sentframe = vsc.requestFrame();
         if(sentframe.empty())
             continue;
-
-        //cv::Mat res(sentframe.rows / SCALE, sentframe.cols / SCALE, CV_8UC3);
-        //cv::resize(sentframe, res, cv::Size(0,0), 1/SCALE, 1/SCALE);
 
         cv::imshow("Sent", sentframe);
         cv::waitKey(1000 / 25);

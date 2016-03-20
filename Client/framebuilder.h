@@ -2,6 +2,10 @@
 #define FRAMEBUILDER_H
 #include "common.h"
 
+
+/*
+    Class capable of reconstructing an image one block at a time
+ */
 class FrameBuilder
 {
 
