@@ -11,6 +11,7 @@
 using namespace cv;
 using namespace std;
 
+#define BLUEFOX_CAM //comment if you want to use the default opencv camera
 #define WIDTH 752
 #define HEIGHT 480
 #define BLUR_FRAME
@@ -24,14 +25,18 @@ int main(int argc, const char * argv[]) {
 //    if(!cap.isOpened())  // check if we succeeded
 //        return -1;
 
-//    CvCapture* capture = cvCreateCameraCapture(-1);
-//    if (!capture)
-//        return -1;
-//    cvSetCaptureProperty( capture, CV_CAP_PROP_FRAME_WIDTH, 640);
-//    cvSetCaptureProperty( capture, CV_CAP_PROP_FRAME_HEIGHT, 480);
-//    cvSetCaptureProperty( capture, CV_CAP_PROP_FPS, 110);
-	BlueFoxCam* cam = new BlueFoxCam();
-	LowPassFilter* lpf = new LowPassFilter(100, 0);
+#ifdef BLUEFOX_CAM
+    BlueFoxCam* cam = new BlueFoxCam();
+#else	//default opencv camera
+    CvCapture* capture = cvCreateCameraCapture(-1);
+    if (!capture)
+        return -1;
+    cvSetCaptureProperty( capture, CV_CAP_PROP_FRAME_WIDTH, WIDTH);
+    cvSetCaptureProperty( capture, CV_CAP_PROP_FRAME_HEIGHT, HEIGHT);
+    cvSetCaptureProperty( capture, CV_CAP_PROP_FPS, 60);
+#endif //BLUEFOX_CAM
+
+    LowPassFilter* lpf = new LowPassFilter(100, 0);
     Detector* detector;
 
     try{
@@ -58,12 +63,15 @@ int main(int argc, const char * argv[]) {
     
     for(;;)
     {
-        ////frame = cvarrToMat(cvQueryFrame(capture), true);
-        try{
+    	#ifdef BLUEFOX_CAM
+	    try{
         	cam->getImage(frame.data);
-        }catch(runtime_error e){
+            }catch(runtime_error e){
         	cout << e.what() << endl;
-        }
+            }
+	#else	//default opencv camera
+	    frame = cvarrToMat(cvQueryFrame(capture), true);
+	#endif //BLUEFOX_CAM
         
         detector->prepareImage(frame, scaled, prevface.face);
         
@@ -71,7 +79,6 @@ int main(int argc, const char * argv[]) {
         if(prevface.eye.x){	//eye already detected, so perform track only
             //detector.display(prevface, frame);
             if(prevface.eyeOpen == 2){
-            	//sd.waitMillis(50);
             	this_thread::sleep_for(std::chrono::milliseconds(100));
             	if(lpf->Perform_digital(sd.isOpen(prevface.eyetpl, SleepDetector::SD_ADAPTIVE_THRESHOLDING)? 2 : 0) == 0){
             		cout << "Beep!----------------------------------------------------" << endl;
