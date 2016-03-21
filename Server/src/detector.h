@@ -16,9 +16,9 @@ typedef struct{
 class Detector{
 private:
     CascadeClassifier face_cascade, eye_cascade, profile_cascade;
-    float ds;
-    float us;
-    float zoom;
+    float ds;   //downscale factor
+    float us;   //upscale factor
+    //float zoom;
 public:
     Detector();
     Detector(std::string frontface, std::string eyes, std::string profileface, float scalefactor);

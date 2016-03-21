@@ -56,7 +56,9 @@ bool Detector::detect(Mat &image, Face &face){
         face.eye = Rect(0,0,0,0);
         return true;
     }
+    // set eye area
     face.eye=eyes[0]+Point(face.face.x, face.face.y);
+    // save eye image
     face.eyetpl = image(face.eye);
 
     return true;
@@ -73,8 +75,6 @@ void Detector::display(Face face, Mat &image){
 }
 
 void Detector::trackEye(Mat im, Face &face){
-    //Size size(face.eye.width * 2,  face.eye.height * 2);
-
     Rect window(face.eye.x-face.eye.width, face.eye.y-face.eye.height, face.eye.width*2, face.eye.height*2);
 
     window &=  Rect(0, 0, im.cols, im.rows);
@@ -93,7 +93,7 @@ void Detector::trackEye(Mat im, Face &face){
         face.eye.y = window.y + minloc.y;
         face.eyetpl = im(face.eye);
     }
-    else
+    else    // no matching template found
         face.eye.x = 0;
 }
 
