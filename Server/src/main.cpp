@@ -1,3 +1,4 @@
+
 #include <iostream>
 #include <opencv2/opencv.hpp>
 #include "detector.h"
@@ -11,7 +12,6 @@
 using namespace cv;
 using namespace std;
 
-#define BLUEFOX_CAM //comment if you want to use the default opencv camera
 #define WIDTH 752
 #define HEIGHT 480
 #define BLUR_FRAME
@@ -25,7 +25,7 @@ int main(int argc, const char * argv[]) {
 //    if(!cap.isOpened())  // check if we succeeded
 //        return -1;
 
-#ifdef BLUEFOX_CAM
+#ifdef ENABLE_BLUEFOX
     BlueFoxCam* cam = new BlueFoxCam();
 #else	//default opencv camera
     CvCapture* capture = cvCreateCameraCapture(-1);
@@ -34,7 +34,7 @@ int main(int argc, const char * argv[]) {
     cvSetCaptureProperty( capture, CV_CAP_PROP_FRAME_WIDTH, WIDTH);
     cvSetCaptureProperty( capture, CV_CAP_PROP_FRAME_HEIGHT, HEIGHT);
     cvSetCaptureProperty( capture, CV_CAP_PROP_FPS, 60);
-#endif //BLUEFOX_CAM
+#endif
 
     LowPassFilter* lpf = new LowPassFilter(100, 0);
     Detector* detector;
@@ -106,8 +106,12 @@ int main(int argc, const char * argv[]) {
         if(waitKey(10) >= 0) break;
     }
     vss.stop();
+
     // deinitialize camera
+#ifdef ENABLE_BLUEFOX
     delete cam;
+#endif
+    
     delete detector;
     delete lpf;
     return 0;

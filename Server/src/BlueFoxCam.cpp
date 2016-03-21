@@ -1,4 +1,6 @@
 #include "BlueFoxCam.h"
+#ifdef BLUEFOXCAM_H
+
 #include <exception>
 #include <iostream>
 using namespace std;
@@ -78,5 +80,4 @@ void BlueFoxCam::getImage(unsigned char* data)
 	this->fi->imageRequestSingle();
 }
 
-
-
+#endif
